@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  model_name: MyString
+  initial_object: MyString
   commands: MyString
   initial_query: MyString
   generated_sql: MyString
 
 two:
-  model_name: MyString
+  initial_object: MyString
   commands: MyString
   initial_query: MyString
   generated_sql: MyString

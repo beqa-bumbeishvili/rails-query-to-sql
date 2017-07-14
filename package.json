@@ -1,0 +1,5 @@
+{
+  "name": "query_string_to_sql",
+  "private": true,
+  "dependencies": {}
+}

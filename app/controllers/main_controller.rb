@@ -8,15 +8,23 @@ class MainController < ApplicationController
     if params['query'].present?
       query_string = params['query']
       @errors = find_errors(query_string)
-      query_commands = %w(select where find distinct group having includes joins order preload )
+      query_commands = %w(first select where find distinct group having includes joins order preload pluck last take)
       sql_structure_hash = {
           main_table: query_string.split('.').first
       }
 
       query_commands.each do |command|
         if query_string.include? command
-          command_index = query_string.index("#{command}") + "#{command}".length
-          sql_structure_hash[command] = query_string[command_index..(query_string[command_index..-1]).index(')') + command_index]
+          if query_string[query_string.index("#{command}") - 1] == '.'
+            command_index = query_string.index("#{command}") + "#{command}".length
+            if query_string.rindex('.') > command_index
+              sql_structure_hash[command] = query_string[command_index..(query_string[command_index..-1]).index(').') + command_index]
+            elsif query_string[-1] == ')'
+              sql_structure_hash[command] = query_string[command_index..(query_string[command_index..-1]).index(')') + command_index]
+            else
+              sql_structure_hash[command] = 'end'
+            end
+          end
         end
       end
 
@@ -33,7 +41,6 @@ class MainController < ApplicationController
 
     render :convert
   end
-
 
   private
 

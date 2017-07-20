@@ -36,7 +36,10 @@ class MainController < ApplicationController
         end
       end
 
+      sql_structure_hash['sql'] = generate_sql(sql_structure_hash)
+
       @convert = sql_structure_hash
+
     end
 
     render :convert
@@ -52,7 +55,7 @@ class MainController < ApplicationController
     elsif command_string[1] == ':'
          return 'symbol'
     elsif command_string.index(':').present?
-         return 'hash' if command_string.index(':') > 2 && command_string.index(':') < command_string - 1
+         return 'hash' if command_string.index(':') > 2 && command_string.index(':') < command_string.length - 1
     elsif !!(command_string.gsub(/([()])/, '') =~ /\A[-+]?[0-9]+\z/)
          return 'integer'
     end
@@ -68,6 +71,20 @@ class MainController < ApplicationController
       when /[[:upper:]]/ then return true
       else return false
     end
+  end
+
+  def generate_sql(object)
+    sql_string = ''
+    if object['select'].present?
+
+      sql_string += "SELECT #{object['select'][:command].gsub("'", '').gsub(/[()]/, '')} FROM #{object[:main_table].tableize}"
+    end
+
+    if object['where'].present?
+
+    end
+
+    sql_string
   end
 
 end

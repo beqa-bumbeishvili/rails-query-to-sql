@@ -76,10 +76,8 @@ class MainController < ApplicationController
   def generate_sql(object)
     sql_string = ''
     if object['select'].present?
-
       sql_string += "SELECT #{object['select'][:command].gsub("'", '').gsub(/[()]/, '')} FROM #{object[:main_table].tableize}"
     end
-
     if object['where'].present?
 
     end
